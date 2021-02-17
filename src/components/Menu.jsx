@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
 import {auth} from "../firebaseconfig";
 
 const Menu = () => {
 
+    const historial = useHistory()
     const [usuario, setUsuario] = useState(null)
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
@@ -17,6 +18,7 @@ const Menu = () => {
     const cerrarSesion = () => {
         auth.signOut()
         setUsuario(null)
+        historial.push('/login')
     }
 
     return (
@@ -24,13 +26,37 @@ const Menu = () => {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/">Inicio</Link>
+                        {
+                            usuario ?
+                                (
+                                    <Link className="nav-link" to="/">Inicio</Link>
+                                ) :
+                                (
+                                    <span/>
+                                )
+                        }
                     </li>
                     <li>
-                        <Link className="nav-link" to="/login">Login</Link>
+                        {
+                            !usuario ?
+                                (
+                                    <Link className="nav-link" to="/login">Login</Link>
+                                ) :
+                                (
+                                    <span/>
+                                )
+                        }
                     </li>
                     <li>
-                        <Link className="nav-link" to="/admin">Admin</Link>
+                        {
+                            usuario ?
+                                (
+                                    <Link className="nav-link" to="/admin">Admin</Link>
+                                ) :
+                                (
+                                    <span/>
+                                )
+                        }
                     </li>
                 </ul>
                 {

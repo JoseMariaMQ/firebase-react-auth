@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import {auth} from "../firebaseconfig";
+import {useHistory} from 'react-router-dom'
 
 const Login = () => {
 
+    const historial = useHistory()
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
     const  [msgError, serMsgError] = useState(null)
@@ -10,7 +12,9 @@ const Login = () => {
     const registrarUsuario = (e) => {
         e.preventDefault()
         auth.createUserWithEmailAndPassword(email, pass)
-            .then(r => alert("Usuario registrado"))
+            .then(r => {
+                historial.push('/')
+            })
             .catch (e => {
                 if (e.code === 'auth/invalid-email') serMsgError('Formato de Email incorrecto')
                 if (e.code === 'auth/weak-password') serMsgError('La password debe tener 6 mínimo caracteres')
@@ -19,7 +23,9 @@ const Login = () => {
 
     const loginUsuario = (e) => {
         auth.signInWithEmailAndPassword(email, pass)
-            .then((r) => console.log(r))
+            .then((r) => {
+                historial.push('/')
+            })
             .catch((err) => {
                 if (err.code === 'auth/wrong-password') serMsgError('Password incorrecta')
             })
