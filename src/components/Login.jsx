@@ -17,19 +17,28 @@ const Login = () => {
             })
     }
 
+    const loginUsuario = (e) => {
+        auth.signInWithEmailAndPassword(email, pass)
+            .then((r) => console.log(r))
+            .catch((err) => {
+                if (err.code === 'auth/wrong-password') serMsgError('Password incorrecta')
+            })
+    }
+
     return (
         <div className="row mt-5">
             <div className="col"/>
             <div className="col">
-                <form onSubmit={registrarUsuario} className="from-group mb-4">
+                <form onSubmit={registrarUsuario} className="form-group mb-4">
                     <input onChange={(e) => {setEmail(e.target.value)}} className="form-control" placeholder="Introcude el Email" type="email"/>
                     <input onChange={(e) => {setPass(e.target.value)}} className="form-control mt-4" placeholder="Introduce la Password" type="password"/>
                     <input className="btn btn-dark btn-block mt-4" value="Registrar Usuario" type="submit"/>
                 </form>
+                <button onClick={loginUsuario} className="btn btn-success btn-block mb-4">Iniciar Sesión</button>
                 {
                     msgError != null ?
                         (
-                            <div>{msgError}</div>
+                            <div className="alert-danger text-center">{msgError}</div>
                         ) :
                         (
                             <span></span>
